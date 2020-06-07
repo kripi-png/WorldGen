@@ -21,7 +21,6 @@ export default class WorldCell {
   }
 
   createLeft(a) {
-    // a == this, let room == the new room
     const locX = a.x - 1;
     const locY = a.y;
     if ( locX < 0 ) return;
