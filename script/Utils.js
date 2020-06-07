@@ -6,7 +6,6 @@ export function createSpawn() {
   let spawnId = importantRooms.findIndex(function(index, i) { return index.id == 'spawn'; });
   let spawn = importantRooms[spawnId];
   world.push(new WorldCell(spawn.x, spawn.y, spawn.id, spawn.color));
-  table[spawn.y].children[spawn.x].innerHTML = "spawn";
 }
 
 export function createSpecialRooms() {
@@ -30,6 +29,8 @@ export function paintTheWorld() {
   for (let i = 0; i < world.length; i++) {
     // get x and y properties of world[i] and use the coordinates as index
     table[world[i].y].children[world[i].x].style.background = world[i].color;
+    if ( world[i].id !== 'worldCell' )
+      table[world[i].y].children[world[i].x].innerHTML = world[i].id;
   }
 }
 
