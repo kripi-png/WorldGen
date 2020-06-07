@@ -2,9 +2,9 @@ import * as Utils from './Utils.js'
 import WorldCell from './World.js'
 
 export const table = document.getElementById("world").children[0].children;
-const rooms = 20;
 export const world = [];
-export const possibleRooms = [{
+export const possibleRooms = [
+{
   id: 'room1',
   mapId: null
 },
@@ -54,6 +54,9 @@ export const importantRooms = [
   }
 ];
 
+export const rooms = 20 + importantRooms.length - 1;
+
 Utils.createSpawn();
 Utils.createRooms(rooms);
+Utils.createSpecialRooms();
 Utils.paintTheWorld();
