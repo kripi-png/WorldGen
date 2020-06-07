@@ -8,6 +8,8 @@
 
     <script defer type="module" src="./script/main.js"></script>
 
+    <!-- use exported functions / variables -->
+    <script defer type="text/javascript"> import('/script/main.js').then(m => module = m); </script>
   </head>
   <body>
     <table id="world">

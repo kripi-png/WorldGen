@@ -6,7 +6,7 @@ import WorldCell from './World.js'
 
 
 // create the world
-const table = document.getElementById("world").children[0].children;
+export const table = document.getElementById("world").children[0].children;
 const rooms = 20;
 export let world = new Array();
 export const possibleRooms = [{
@@ -45,7 +45,9 @@ export const possibleRooms = [{
 export const importantRooms = [
   {
     id: 'spawn',
-    color: '#0ff'
+    color: '#0ff',
+    x: Utils.rand(0,10),
+    y: Utils.rand(0,10)
   },
   {
     id: 'exit',
@@ -59,25 +61,13 @@ export const importantRooms = [
 
 Utils.createSpawn();
 createRooms(rooms);
-paintTheWorld();
+Utils.paintTheWorld();
 
 function createRooms(num) {
   console.log("Rooms on this floor", num);
-  // selecting spawn room
 
-  // let n = rand(0, 1);
-  // if (n == 1) world[0].createLeft();
-  // n = rand(0, 1);
-  // if (n == 1) world[0].createRight();
-  // n = rand(0, 1);
-  // if (n == 1) world[0].createUp();
-  // n = rand(0, 1);
-  // if (n == 1) world[0].createDown();
-
-  console.log("rooms to be built:", num);
-
-  // while ( world.length < num+1 ) {
-  for (let i = 0; i < num; i++) {
+  while ( world.length < num ) {
+  // for (let i = 0; i < num; i++) {
     const available = new Array();
 
     // loop through all rooms and add existing ones into the array
@@ -85,37 +75,25 @@ function createRooms(num) {
       let room = world[i];
       if (room.id != 'empty' && room.id != 'loot' && room.id != 'exit' && room.id != 'x')
 
-      if (!available.includes(room)) available.push(room); else return;
+      if ((!available.includes(room))) available.push(room); else return;
 
     }
 
     // select random room out of already existing ones
-    let a = rand(0, available.length - 1);
+    let a = Utils.rand(0, available.length - 1); // index of random room
     let randomRoom = available[a];
-    console.log(randomRoom);
-    // check how many available spots there is
+    let dirs = randomRoom.getAvailableDirections;
 
-    // if (randomRoom.right == null)
-    //   if (randomRoom.right.up == null && randomRoom.right.down == null)
-    //     console.log("asd");
-
-
-
-
-
+    if ( dirs ) {
+      let randDir = dirs[Utils.rand(0,dirs.length-1)];
+      randomRoom.funcs[randDir](randomRoom);
+    }
     available.splice(a, 1)
-    
   }
+
+  console.log(world.length,"rooms built");
 }
 
-function paintTheWorld() {
-  for (let i = 0; i < world.length; i++) {
-    if (world[i].id)
-      table[world[i].y].children[world[i].x].style.background = world[i].color;
-  }
-}
-
-function rand(a, b) {
-  if (a == 0) b += 1;
-  return Math.floor(Math.random() * b) + a;
+export function getWorld() {
+  return world;
 }

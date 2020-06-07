@@ -11,41 +11,90 @@ export default class WorldCell {
     this.color = color;
     this.x = x;
     this.y = y;
+
+    this.funcs = {
+      left: this.createLeft,
+      right: this.createRight,
+      up: this.createUp,
+      down: this.createDown
+    }
   }
 
-  createLeft() {
-    const locX = this.x - 1;
-    const locY = this.y;
-    let room = new WorldCell(locX, locY);
-    room.right = this;
-    this.left = room;
+  createLeft(a) {
+    // a == this, let room == the new room
+    const locX = a.x - 1;
+    const locY = a.y;
+    if ( locX < 0 ) return;
+    if ( a.left !== null ) return;
+
+    let room = new WorldCell(locX, locY, 'worldCell', '#000',a.getNeighbours.left,a.getNeighbours.right,a.getNeighbours.up,a.getNeighbours.down);
+    room.right = a;
+    a.left = room;
     world.push(room);
   }
 
-  createRight() {
-    const locX = this.x + 1;
-    const locY = this.y;
-    let room = new WorldCell(locX, locY);
-    room.left = this;
-    this.right = room;
+  createRight(a) {
+    const locX = a.x + 1;
+    const locY = a.y;
+    if ( locX > 10 ) return;
+    if ( a.right !== null ) return;
+
+    let room = new WorldCell(locX, locY, 'worldCell', '#000',a.getNeighbours.left,a.getNeighbours.right,a.getNeighbours.up,a.getNeighbours.down);
+    room.left = a;
+    a.right = room;
     world.push(room);
   }
 
-  createUp() {
-    const locX = this.x;
-    const locY = this.y - 1;
-    let room = new WorldCell(locX, locY);
-    room.down = this;
-    this.up = room;
+  createUp(a) {
+    const locX = a.x;
+    const locY = a.y - 1;
+    if ( locY < 0 ) return;
+    if ( a.up !== null ) return;
+
+    let room = new WorldCell(locX, locY, 'worldCell', '#000',a.getNeighbours.left,a.getNeighbours.right,a.getNeighbours.up,a.getNeighbours.down);
+    room.down = a;
+    a.up = room;
     world.push(room);
   }
 
-  createDown() {
-    const locX = this.x;
-    const locY = this.y + 1;
-    let room = new WorldCell(locX, locY);
-    room.up = this;
-    this.down = room;
+  createDown(a) {
+    const locX = a.x;
+    const locY = a.y + 1;
+    if ( locY > 10 ) return;
+    if ( a.down !== null ) return;
+
+    let room = new WorldCell(locX, locY, 'worldCell', '#000',a.getNeighbours.left,a.getNeighbours.right,a.getNeighbours.up,a.getNeighbours.down);
+    room.up = a;
+    a.down = room;
     world.push(room);
+  }
+
+  get getAvailableDirections() {
+    let directions = new Array();
+
+    if ( this.up == null ) directions.push( 'up' );
+    else {
+      if  ( this.up.right == null ) directions.push( 'right' );
+      if  ( this.up.left == null ) directions.push( 'left' );
+    }
+
+    if ( this.down == null ) directions.push( 'down' );
+    else {
+      if  ( this.down.right == null ) if (!directions.includes( 'right' )) directions.push( 'right' );
+      if  ( this.down.left == null ) if (!directions.includes( 'left' )) directions.push( 'left' );
+    }
+    // console.log(directions);
+    if ( directions.length !== 0 ) return directions;
+  }
+
+  get getNeighbours(){
+    let neighbours = { left: null, right: null, up: null, down: null };
+
+    if ( this.up !== null ) neighbours.up = this.up;
+    if ( this.down !== null ) neighbours.down = this.down;
+    if ( this.left !== null ) neighbours.left = this.left;
+    if ( this.right !== null ) neighbours.right = this.right;
+
+    return neighbours;
   }
 }
