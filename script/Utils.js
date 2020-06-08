@@ -9,13 +9,26 @@ export function createSpawn() {
 }
 
 export function createSpecialRooms() {
-  // get spawn room data
-  importantRooms.forEach((item, i) => {
-    if ( item.id !== 'spawn' ) {
-      const randomRoom = getRandomRoom(false);
-      world[world.indexOf(randomRoom)] = new WorldCell(randomRoom.x, randomRoom.y, item.id, item.color);
+  const rooms = importantRooms;
+  const a = rooms.findIndex(function(index, i) { return index.id == 'spawn'; });
+  rooms.splice(a,1);
+  let n = 0;
+  while ( rooms.length >= 1 ) {
+    if ( rooms[0] !== null ) {
+      let room = rooms[0];
+      let b = getRandomRoom( false )
+      let c = b.getNeighbours;
+
+      if (!b.isNexTo('spawn') && !b.isNexTo('loot') && !b.isNexTo('exit')) {
+        b = world[world.indexOf(b)] = new WorldCell(b.x, b.y, room.id, room.color,b.left,b.right,b.up,b.down);
+        console.log("room created",b);
+        rooms.splice(0,1)
+      } else {
+      }
     }
-  });
+    n++;
+    if ( n > 10 ) return;
+  }
 }
 
 // a function for getting random number between a and b
@@ -34,19 +47,20 @@ export function paintTheWorld() {
   }
 }
 
-export function getRandomRoom(canBeSpawn=true) {
+export function getRandomRoom(canBeSpecial=true) {
   // loop all rooms and add existing ones into the array
   const randomRooms = [];
   for (let i = 0; i < world.length; i++) {
     const room = world[i];
-    if (room.id != 'loot' && room.id != 'exit')
-      if (canBeSpawn)
+    if (room.id !== 'loot' && room.id !== 'exit')
+      if (canBeSpecial)
           if ((!randomRooms.includes(room))) randomRooms.push(room); else return;
       else
-        if ( room.id != 'spawn' )
+        if ( room.id !== 'spawn')
           if ((!randomRooms.includes(room))) randomRooms.push(room); else return;
   }
-  return randomRooms[rand(0, randomRooms.length - 1)];
+  let a = randomRooms[rand(0, randomRooms.length - 1)];
+  return a;
 }
 
 export function getRandomDirection(room) {
@@ -59,7 +73,10 @@ export function createRooms(num) {
   while ( world.length < num ) {
     const randomRoom = getRandomRoom();
     const randDir = getRandomDirection(randomRoom);
-    if ( randDir ) randomRoom.funcs[randDir](randomRoom);
+    if ( randDir === 'left' ) randomRoom.createLeft();
+    else if ( randDir === 'right' ) randomRoom.createRight();
+    else if ( randDir === 'up' ) randomRoom.createUp();
+    else if ( randDir === 'down' ) randomRoom.createDown();
   }
   console.log("Finished building",world.length,"rooms.");
 }

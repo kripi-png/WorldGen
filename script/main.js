@@ -60,3 +60,7 @@ Utils.createSpawn();
 Utils.createRooms(rooms);
 Utils.createSpecialRooms();
 Utils.paintTheWorld();
+
+world.forEach((item, i) => {
+  item.setNeighbours();
+});
