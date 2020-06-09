@@ -42,15 +42,26 @@ export default class WorldCell {
   }
 
   isTouching(id) {
-    // TODO: if typeof id === object
-
     const n = [this.up,this.down,this.left,this.right];
 
-    for ( const dir of n ) {
-      if ( dir !== null ) {
-        if ( dir.id === id ) return true;
-      }
+    if ( typeof id === 'object' ) {
+      for ( const object of id ) {
+        for ( const dir of n ) {
+          if ( dir !== null ) {
+            if ( object === dir.id ) return true;
+          }
+        }
+      } return false;
     }
-    return false;
+
+    else if ( typeof id === 'string' ) {
+      for ( const dir of n ) {
+        if ( dir !== null ) {
+          if ( dir.id === id ) return true;
+        }
+      } return false;
+    }
+
+    else throw new Error ("Invalid type:",typeof id);
   }
 }

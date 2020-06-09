@@ -78,28 +78,13 @@ export function createSpecialRooms() {
     const x = room.y;
     const y = room.x;
 
-    if ( !room.isTouching('spawn') && !roomIds.includes(room.id) ) {
+    if ( !room.isTouching(roomIds) && !roomIds.includes(room.id) ) {
       world[x][y] = new WorldCell(y,x,rooms[0].id,rooms[0].color);
 
       rooms.splice(0,1);
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export function getRandomRoom(special=true) {
   const randomRooms = [];
