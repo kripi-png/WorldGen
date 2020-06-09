@@ -5,13 +5,10 @@ import WorldCell from './World.js'
 export function paintTheWorld() {
   console.log( "----- Painting the world -----" );
   for ( const y in world ) {
-    for ( const x in world ) {
+    for ( const x in world[y] ) {
       const cell = world[x][y]
       if ( cell.id !== 'empty' )
         table[x].children[y].style.backgroundColor = cell.color;
-
-      // else
-      //   table[x].children[y].innerHTML = cell.y+";"+cell.x;
 
       if ( cell.id === 'spawn' || cell.id === 'loot' || cell.id === 'exit' )
         table[x].children[y].innerHTML = cell.id
@@ -47,7 +44,7 @@ export function createRooms(num) {
     if ( randomNeighbour !== null ) {
       if ( randomNeighbour.id === 'empty' ) {
         if ( !roomList.includes( randomNeighbour ) ) {
-          console.debug(">> Creating new room in coordinates",y,x);
+          console.debug(">> Creating a new room [id: worldCell] in coordinates",y,x);
           world[x][y] = new WorldCell(y,x);
           roomList.push(world[x][y]);
         }
@@ -86,6 +83,10 @@ export function getRandomRoom(special=true) {
   } else throw new Error ( "No valid cells in the world" )
 }
 
+export function createSpecialRooms() {
+
+}
+
 export function getRandomDirection(room) {
   const dirs = [];
 
@@ -96,42 +97,6 @@ export function getRandomDirection(room) {
 
   const i = rand(0,dirs.length-1);
   return dirs[i];
-}
-
-
-
-
-
-
-
-
-
-
-
-
-export function createSpecialRooms() {
-  // const rooms = importantRooms;
-  // const a = rooms.findIndex(function(index, i) { return index.id == 'spawn'; });
-  // rooms.splice(a,1);
-  // let i = 0;
-  // while ( rooms.length >= 1 ) {
-  //   if ( rooms[0] !== null ) {
-  //     let room = rooms[0];
-  //     let b = getRandomRoom( false )
-  //     let c = b.getNeighbours;
-  //
-  //     if (!b.isNexTo('spawn') && !b.isNexTo('loot') && !b.isNexTo('exit')) {
-  //       b.removeRoom();
-  //       b = new WorldCell(b.x, b.y, room.id, room.color,b.left,b.right,b.up,b.down);
-  //       world.push(b);
-  //       console.log("room created",b);
-  //       rooms.splice(0,1)
-  //     } else {
-  //     }
-  //   }
-  //   i++;
-  //   if ( i > 10 ) return;
-  // }
 }
 
 // a function for getting random number between a and b

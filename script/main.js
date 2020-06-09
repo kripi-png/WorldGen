@@ -2,67 +2,75 @@ import * as Utils from './Utils.js'
 import WorldCell from './World.js'
 
 export const table = document.getElementById("world").children[0].children;
-export const world = [];
-export const roomList = [];
+export const world = []; // world data
+export const roomList = []; // for checking for dublicates
+
+// list of normal room objects. Generator will randomly select one of available objects and use its data
 export const possibleRooms = [
 {
   id: 'room1',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room2',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room3',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room4',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room5',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room6',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room7',
-  mapId: null
+  levelId: null
 },
 {
   id: 'room8',
-  mapId: null
+  levelId: null
 }
 ];
+
+// list of special room objects that can have all kind of information about said rooms
 export const importantRooms = [
   {
     id: 'spawn',
     color: '#0ff',
     x: Utils.rand(0,10),
-    y: Utils.rand(0,10)
+    y: Utils.rand(0,10),
+    levelId: null
   },
   {
     id: 'exit',
-    color: '#f00'
+    color: '#f00',
+    levelId: null
   },
   {
     id: 'loot',
-    color: '#FFEB3B'
+    color: '#FFEB3B',
+    levelId: null
   }
 ];
 
-export const rooms = 20 + importantRooms.length - 1;
+// how many rooms will the generator create. Includes important rooms
+export const rooms = 22;
 
 Utils.createWorld(rooms);
 Utils.paintTheWorld();
 
-// world.forEach((item, i) => { item.setNeighbours(); });
 console.log("----- Actual room count",checkActualSize(),"-----");
 
+// for debugging purposes
 export function checkActualSize () {
   const list = [];
   for ( const row in table ) {

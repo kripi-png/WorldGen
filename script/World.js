@@ -1,5 +1,6 @@
 import { world } from './main.js'
 const defaultColor = "#7f7f7f";
+
 export default class WorldCell {
   constructor(x, y, id = 'worldCell', color = defaultColor, cleared = false) {
     this.id = id;
@@ -29,7 +30,7 @@ export default class WorldCell {
       this.left = (x===0)?null : world[y][x-1];
       this.right  = (x===10)?null : world[y][x+1];
 
-      if ( this.up !== null )
+      if ( this.up )
         this.up.down = this;
       if ( this.down )
         this.down.up = this;
