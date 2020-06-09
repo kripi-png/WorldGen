@@ -3,6 +3,7 @@ import WorldCell from './World.js'
 
 export const table = document.getElementById("world").children[0].children;
 export const world = [];
+export const roomList = [];
 export const possibleRooms = [
 {
   id: 'room1',
@@ -56,16 +57,11 @@ export const importantRooms = [
 
 export const rooms = 20 + importantRooms.length - 1;
 
-Utils.createWorld();
-Utils.createSpawn();
-// Utils.createRooms(rooms);
-// Utils.createSpecialRooms();
+Utils.createWorld(rooms);
 Utils.paintTheWorld();
 
 // world.forEach((item, i) => { item.setNeighbours(); });
-// console.log("Actual room count",checkActualSize());
-// if ( checkActualSize() !== rooms )
-//   console.log("seems like some rooms got replaced");
+console.log("----- Actual room count",checkActualSize(),"-----");
 
 export function checkActualSize () {
   const list = [];
@@ -79,25 +75,4 @@ export function checkActualSize () {
     }
   }
   return list.length;
-}
-
-export function lookForDuplicates() {
-  const list = [];
-
-  for ( const i in world ) {
-    const a = world[i];
-    const b = { x:a.x,y:a.y }
-
-    console.log(a);
-
-    const c = [];
-    for ( j in list ) {
-      d = list[j]
-      console.log(d);
-      if ( (b.x !== d.x) && (b.y !== d.y) ) console.log("asd");
-      else console.log("wtf", b);
-    }
-  }
-
-  return list;
 }

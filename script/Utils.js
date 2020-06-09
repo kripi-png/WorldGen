@@ -1,38 +1,113 @@
-import { importantRooms, world, table, rooms, checkActualSize } from './main.js'
+import { importantRooms, world, table, roomList } from './main.js'
 import WorldCell from './World.js'
 
 // use room.color property to color cells
 export function paintTheWorld() {
-  console.log( "Painting the world" );
-  for ( let i = 0; i < world.length; i++ ) {
-    const col = world[i];
-    for ( let j = 0;j<col.length;j++) {
-      const cell = world[j][i]
+  console.log( "----- Painting the world -----" );
+  for ( const y in world ) {
+    for ( const x in world ) {
+      const cell = world[x][y]
       if ( cell.id !== 'empty' )
-        table[j].children[i].style.backgroundColor = cell.color;
+        table[x].children[y].style.backgroundColor = cell.color;
+
+      // else
+      //   table[x].children[y].innerHTML = cell.y+";"+cell.x;
 
       if ( cell.id === 'spawn' || cell.id === 'loot' || cell.id === 'exit' )
-        table[j].children[i].innerHTML = cell.id
+        table[x].children[y].innerHTML = cell.id
     }
   }
 }
 
-export function createWorld() {
-  for (let i=0;i<11;i++) {
-    world[i] = [];
-    for (let j=0;j<11;j++) {
-      world[i][j] = new WorldCell(i,j,'empty',null);
+export function createWorld(a) {
+  for (let y=0;y<11;y++) {
+    world[y] = [];
+    for (let x=0;x<11;x++) {
+      world[y][x] = new WorldCell(x,y,'empty',null);
     }
   }
   console.log(world);
+
+  createRooms(a);
+}
+
+export function createRooms(num) {
+  console.log("----- Rooms on this floor:",num,"-----");
+  createSpawn();
+
+  while ( roomList.length < num ) {
+    const randomRoom = getRandomRoom();
+    const randDir = getRandomDirection(randomRoom);
+    const randomNeighbour = randomRoom[randDir];
+
+    const x = randomNeighbour.y;
+    const y = randomNeighbour.x;
+
+
+    if ( randomNeighbour !== null ) {
+      if ( randomNeighbour.id === 'empty' ) {
+        if ( !roomList.includes( randomNeighbour ) ) {
+          console.debug(">> Creating new room in coordinates",y,x);
+          world[x][y] = new WorldCell(y,x);
+          roomList.push(world[x][y]);
+        }
+      }
+    }
+  }
+
+  createSpecialRooms()
+
+  console.log("----- Finished building",roomList.length,"rooms -----");
 }
 
 export function createSpawn() {
-  console.log("Creating spawn room");
+  console.log("----- Creating the spawn room -----");
   const id = importantRooms.findIndex(function(index, i) { return index.id == 'spawn'; });
   const spawnRoomData = importantRooms[id];
   world[spawnRoomData.y][spawnRoomData.x] = new WorldCell(spawnRoomData.x, spawnRoomData.y, spawnRoomData.id, spawnRoomData.color);
+  roomList.push(world[spawnRoomData.y][spawnRoomData.x]);
 }
+
+export function getRandomRoom(special=true) {
+  const randomRooms = [];
+  const allowedRooms = (special)? ['exit','special']: importantRooms;
+
+  for ( const row of world ) {
+    for ( const cell of row ) {
+      if ( cell.id !== 'empty' && !allowedRooms.includes(cell.id) && !randomRooms.includes(cell) ) {
+        randomRooms.push(cell);
+      }
+    }
+  }
+
+  if ( randomRooms.length>0 ) {
+    const i = rand(0,randomRooms.length-1);
+    return randomRooms[i];
+  } else throw new Error ( "No valid cells in the world" )
+}
+
+export function getRandomDirection(room) {
+  const dirs = [];
+
+  if ( room.x !== 0 ) dirs.push('left');
+  if ( room.x !== 10 ) dirs.push('right');
+  if ( room.y !== 0 ) dirs.push('up');
+  if ( room.y !== 10 ) dirs.push('down');
+
+  const i = rand(0,dirs.length-1);
+  return dirs[i];
+}
+
+
+
+
+
+
+
+
+
+
+
 
 export function createSpecialRooms() {
   // const rooms = importantRooms;
@@ -63,52 +138,4 @@ export function createSpecialRooms() {
 export function rand(a, b) {
   if (a == 0) b += 1;
   return Math.floor(Math.random() * b) + a;
-}
-
-export function getRandomRoom(canBeSpecial=true) {
-  // loop all rooms and add existing ones into the array
-  const randomRooms = [];
-  const allowedRooms = (canBeSpecial)? ['exit','special']: importantRooms;
-
-  world.forEach((room) => {
-    if (!allowedRooms.includes(room.id)) {
-      randomRooms.push(room);
-    }
-  });
-  return randomRooms[rand(0, randomRooms.length - 1)];;
-}
-
-export function getRandomDirection(room) {
-  const dirs = room.getAvailableDirections;
-  if ( dirs ) return dirs[rand(0,dirs.length-1)];
-}
-
-const asd = [];
-
-export function createRooms(num) {
-  console.log("Rooms on this floor:",num);
-  let newRoom;
-  while ( world.length < 6 ) {
-    const randomRoom = getRandomRoom();
-    const randDir = 'left';//getRandomDirection(randomRoom);
-    const nb = randomRoom.getNeighbours; //NeighBours
-    console.log(randomRoom.id);
-    const nbr = nb[randDir]; // NeighBourRoom
-
-
-    if ( randDir === 'left' ) {
-      if ( nbr === null ) {
-        console.log("building");
-        newRoom = randomRoom.createLeft();
-      } else console.log("room already exists in direction",randDir,"in coordinates",nbr.x,nbr.y);
-    }
-    console.log(newRoom);
-    if ( newRoom )
-      if ( !world.includes( newRoom ) )
-        world.push(newRoom)
-      else console.log("Room already exists in the world in coordinates",newRoom.x,newRoom.y);
-  }
-
-
-  console.log("Finished building",world.length,"rooms.");
 }
