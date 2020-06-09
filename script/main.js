@@ -6,43 +6,26 @@ export const world = []; // world data
 export const roomList = []; // for checking for dublicates
 
 // list of normal room objects. Generator will randomly select one of available objects and use its data
-export const possibleRooms = [
+export const types = [
 {
   id: 'room1',
+  color: '#1b5e56',
   levelId: null
 },
 {
   id: 'room2',
+  color: '#28317d',
   levelId: null
 },
 {
   id: 'room3',
-  levelId: null
-},
-{
-  id: 'room4',
-  levelId: null
-},
-{
-  id: 'room5',
-  levelId: null
-},
-{
-  id: 'room6',
-  levelId: null
-},
-{
-  id: 'room7',
-  levelId: null
-},
-{
-  id: 'room8',
+  color: '#b6b7f0',
   levelId: null
 }
 ];
 
 // list of special room objects that can have all kind of information about said rooms
-export const importantRooms = [
+export const specialRooms = [
   {
     id: 'spawn',
     color: '#0ff',
@@ -62,26 +45,8 @@ export const importantRooms = [
   }
 ];
 
-// how many rooms will the generator create. Includes important rooms
+// how many rooms will the generator create including special rooms
 export const rooms = 22;
 
 Utils.createWorld(rooms);
 Utils.paintTheWorld();
-
-console.log("----- Actual room count",checkActualSize(),"-----");
-
-// for debugging purposes
-// counts how many colored cells there are
-export function checkActualSize () {
-  const list = [];
-  for ( const row in table ) {
-    for ( const cell in table[row].children ) {
-      if ( typeof table[row].children[cell] === 'object' ) {
-        const a = table[row].children[cell].getAttribute("style");
-        if ( a !== null )
-          list.push(a);
-      }
-    }
-  }
-  return list.length;
-}
