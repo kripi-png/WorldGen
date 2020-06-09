@@ -71,6 +71,7 @@ Utils.paintTheWorld();
 console.log("----- Actual room count",checkActualSize(),"-----");
 
 // for debugging purposes
+// counts how many colored cells there are
 export function checkActualSize () {
   const list = [];
   for ( const row in table ) {

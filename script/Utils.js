@@ -59,11 +59,47 @@ export function createRooms(num) {
 
 export function createSpawn() {
   console.log("----- Creating the spawn room -----");
-  const id = importantRooms.findIndex(function(index, i) { return index.id == 'spawn'; });
+  const id = importantRooms.findIndex(function(room, i) { return room.id === 'spawn'; });
   const spawnRoomData = importantRooms[id];
   world[spawnRoomData.y][spawnRoomData.x] = new WorldCell(spawnRoomData.x, spawnRoomData.y, spawnRoomData.id, spawnRoomData.color);
   roomList.push(world[spawnRoomData.y][spawnRoomData.x]);
 }
+
+export function createSpecialRooms() {
+  console.log("----- Creating special rooms -----");
+
+  const rooms = importantRooms.slice(); // for special room data (levelId, color, id, etc.)
+  rooms.splice(importantRooms.findIndex((room,i) => { return room.id === 'spawn'}),1);
+  let roomIds = []; // for checking if the room the code is going to replace is a special room (eg. spawn)
+  for ( const room of importantRooms ) { roomIds.push( room.id ) }
+
+  while ( rooms.length > 0) {
+    const room = getRandomRoom();
+    const x = room.y;
+    const y = room.x;
+
+    if ( !room.isTouching('spawn') && !roomIds.includes(room.id) ) {
+      world[x][y] = new WorldCell(y,x,rooms[0].id,rooms[0].color);
+
+      rooms.splice(0,1);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function getRandomRoom(special=true) {
   const randomRooms = [];
@@ -81,10 +117,6 @@ export function getRandomRoom(special=true) {
     const i = rand(0,randomRooms.length-1);
     return randomRooms[i];
   } else throw new Error ( "No valid cells in the world" )
-}
-
-export function createSpecialRooms() {
-
 }
 
 export function getRandomDirection(room) {

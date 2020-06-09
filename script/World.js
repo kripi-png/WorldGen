@@ -40,4 +40,17 @@ export default class WorldCell {
         this.right.left = this;
     }
   }
+
+  isTouching(id) {
+    // TODO: if typeof id === object
+
+    const n = [this.up,this.down,this.left,this.right];
+
+    for ( const dir of n ) {
+      if ( dir !== null ) {
+        if ( dir.id === id ) return true;
+      }
+    }
+    return false;
+  }
 }
