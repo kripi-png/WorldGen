@@ -56,11 +56,48 @@ export const importantRooms = [
 
 export const rooms = 20 + importantRooms.length - 1;
 
+Utils.createWorld();
 Utils.createSpawn();
-Utils.createRooms(rooms);
-Utils.createSpecialRooms();
+// Utils.createRooms(rooms);
+// Utils.createSpecialRooms();
 Utils.paintTheWorld();
 
-world.forEach((item, i) => {
-  item.setNeighbours();
-});
+// world.forEach((item, i) => { item.setNeighbours(); });
+// console.log("Actual room count",checkActualSize());
+// if ( checkActualSize() !== rooms )
+//   console.log("seems like some rooms got replaced");
+
+export function checkActualSize () {
+  const list = [];
+  for ( const row in table ) {
+    for ( const cell in table[row].children ) {
+      if ( typeof table[row].children[cell] === 'object' ) {
+        const a = table[row].children[cell].getAttribute("style");
+        if ( a !== null )
+          list.push(a);
+      }
+    }
+  }
+  return list.length;
+}
+
+export function lookForDuplicates() {
+  const list = [];
+
+  for ( const i in world ) {
+    const a = world[i];
+    const b = { x:a.x,y:a.y }
+
+    console.log(a);
+
+    const c = [];
+    for ( j in list ) {
+      d = list[j]
+      console.log(d);
+      if ( (b.x !== d.x) && (b.y !== d.y) ) console.log("asd");
+      else console.log("wtf", b);
+    }
+  }
+
+  return list;
+}

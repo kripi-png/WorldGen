@@ -1,7 +1,7 @@
 import { world } from './main.js'
-
+const defaultColor = "#7f7f7f";
 export default class WorldCell {
-  constructor(x, y, id = "worldCell", color = "#000", left = null, right = null, up = null, down = null, cleared = false) {
+  constructor(x, y, id = 'worldCell', color = defaultColor, left = null, right = null, up = null, down = null, cleared = false) {
     this.id = id;
     this.left = left;
     this.right = right;
@@ -26,10 +26,11 @@ export default class WorldCell {
     const up = ( a.up === null ) ? null : a.up.left;
     const down = ( a.down === null ) ? null : a.down.left;
 
-    let room = new WorldCell(locX, locY, 'worldCell', '#000',left,right,up,down );
+    let room = new WorldCell(locX, locY, 'worldCell', defaultColor,left,right,up,down );
 
     this.left = room;
-    world.push(room);
+
+    return room;
   }
 
   createRight() {
@@ -45,10 +46,11 @@ export default class WorldCell {
     const up = ( a.up === null ) ? null : a.up.right;
     const down = ( a.down === null ) ? null : a.down.right;
 
-    let room = new WorldCell(locX, locY, 'worldCell', '#000',left,right,up,down );
+    let room = new WorldCell(locX, locY, 'worldCell', defaultColor,left,right,up,down );
 
     this.right = room;
-    world.push(room);
+
+    return room;
   }
 
   createUp() {
@@ -64,10 +66,11 @@ export default class WorldCell {
     const up = null;
     const down = this;
 
-    let room = new WorldCell(locX, locY, 'worldCell', '#000',left,right,up,down );
+    let room = new WorldCell(locX, locY, 'worldCell', defaultColor,left,right,up,down );
 
     this.up = room;
-    world.push(room);
+
+    return room;
   }
 
   createDown() {
@@ -83,10 +86,15 @@ export default class WorldCell {
     const up = this;
     const down = null;
 
-    let room = new WorldCell(locX, locY, 'worldCell', '#000',left,right,up,down );
+    let room = new WorldCell(locX, locY, 'worldCell', defaultColor,left,right,up,down );
 
     this.down = room;
-    world.push(room);
+
+    return room;
+  }
+
+  removeRoom() {
+    world.splice(world.indexOf(this),1);
   }
 
   get getAvailableDirections() {
@@ -108,7 +116,7 @@ export default class WorldCell {
   }
 
   get getNeighbours(){
-    let neighboursList = { left: null, right: null, up: null, down: null };
+    const neighboursList = { left: null, right: null, up: null, down: null };
 
     if ( this.up !== null ) neighboursList.up = this.up;
     if ( this.down !== null ) neighboursList.down = this.down;
@@ -119,7 +127,7 @@ export default class WorldCell {
   }
 
   setNeighbours() {
-    console.log(this);
+    // console.log(this.x+1,this.y+1);
 
     const sUp = this.up;
     const sDown = this.down;
