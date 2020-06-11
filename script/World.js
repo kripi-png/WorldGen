@@ -45,7 +45,7 @@ export default class WorldCell {
   // ( id ) can be either [a list] or a 'string'
   isTouching(id) {
     const n = [this.up,this.down,this.left,this.right];
-
+    
     if ( typeof id === 'object' ) {
       for ( const object of id ) {
         for ( const dir of n ) {
@@ -64,6 +64,6 @@ export default class WorldCell {
       } return false;
     }
 
-    else throw new Error ("Invalid type:",typeof id);
+    else throw new Error ( "Invalid type: " + typeof id );
   }
 }
