@@ -3,7 +3,7 @@ import WorldCell from './World.js'
 
 export const table = document.getElementById("world").children[0].children;
 export const world = []; // world data
-export const roomList = []; // for checking for dublicates
+export const roomList = []; // list of all actual rooms
 
 // list of normal room objects. Generator will randomly select one of available objects and use its data
 export const types = [

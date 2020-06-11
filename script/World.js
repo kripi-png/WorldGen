@@ -41,6 +41,8 @@ export default class WorldCell {
     }
   }
 
+  // returns true if given id matches the id of a neighbour room
+  // ( id ) can be either [a list] or a 'string'
   isTouching(id) {
     const n = [this.up,this.down,this.left,this.right];
 

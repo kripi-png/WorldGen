@@ -1,3 +1,3 @@
-A world generator for Ripoff (https://github.com/kripi-png/ripoff)
+![](https://i.imgur.com/4qeGFfr.gif)
 
-![](https://i.imgur.com/A1HzHN7.gif)
+<h2>[Test it](https://kripi-png.github.io/WorldGen/index.html)</h2

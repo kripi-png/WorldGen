@@ -26,7 +26,7 @@ export function createWorld(a) {
 }
 
 export function createRooms(num) {
-  console.log("----- Rooms on this floor:",num,"-----");
+  console.log( "----- Rooms on this floor:",num,"-----" );
   createSpawn();
   while ( roomList.length < num ) {
     const randomRoom = getRandomRoom();
@@ -36,10 +36,9 @@ export function createRooms(num) {
     const y = randomNeighbour.x;
     if ( randomNeighbour ) {
       if ( randomNeighbour.id === 'empty' ) {
-        if ( !roomList.includes( randomNeighbour ) ) {
+        if ( !roomList.includes( randomNeighbour )) {
           const type = types[rand(0,types.length-1)];
-
-          // console.debug(">> Creating a new room [id:",type.id+"] in coordinates",y,x);
+          // console.debug( ">> Creating a new room [id:",type.id+"] in coordinates",y,x );
           world[x][y] = new WorldCell(y,x,type.id,type.color);
           roomList.push(world[x][y]);
         }
@@ -47,11 +46,11 @@ export function createRooms(num) {
     }
   }
   createSpecialRooms();
-  console.log("----- Finished building",roomList.length,"rooms -----");
+  console.log( "----- Finished building",roomList.length,"rooms -----" );
 }
 
 export function createSpawn() {
-  console.log("----- Creating the spawn room -----");
+  console.log( "----- Creating the spawn room -----" );
   const id = specialRooms.findIndex(function(room, i) { return room.id === 'spawn'; });
   const spawnRoomData = specialRooms[id];
   world[spawnRoomData.y][spawnRoomData.x] = new WorldCell(spawnRoomData.x, spawnRoomData.y, spawnRoomData.id, spawnRoomData.color);
@@ -59,10 +58,10 @@ export function createSpawn() {
 }
 
 export function createSpecialRooms() {
-  console.log("----- Creating special rooms -----");
+  console.log( "----- Creating special rooms -----" );
   const rooms = specialRooms.slice(); // for special room data (levelId, color, id, etc.)
-  rooms.splice(specialRooms.findIndex((room,i) => { return room.id === 'spawn'}),1);
-  let roomIds = []; // for checking if the room the code is going to replace is a special room (eg. spawn)
+  rooms.splice(specialRooms.findIndex((room,i) => { return room.id === 'spawn'}),1); // remove the spawn room object
+  let roomIds = []; // for checking if the room which the code is going to replace is a special room (e.g. spawn)
   for ( const room of specialRooms ) { roomIds.push( room.id ) }
   while ( rooms.length > 0) {
     const room = getRandomRoom();
@@ -101,7 +100,7 @@ export function getRandomDirection(room) {
   return dirs[i];
 }
 
-// a function for getting random number between a and b
+// a function for getting a random number between a and b
 export function rand(a, b) {
   if (a == 0) b += 1;
   return Math.floor(Math.random() * b) + a;
