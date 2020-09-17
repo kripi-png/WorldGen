@@ -22,10 +22,10 @@ export function createWorld(a) {
       world[y][x] = new WorldCell(x,y,'empty',null);
     }
   }
-  createRooms(a);
+  createRooms( a );
 }
 
-export function createRooms(num) {
+export function createRooms( num ) {
   console.log( "----- Rooms on this floor:",num,"-----" );
   createSpawn();
   while ( roomList.length < num ) {

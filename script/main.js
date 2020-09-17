@@ -45,7 +45,7 @@ export const specialRooms = [
   }
 ];
 
-// how many rooms will the generator create including special rooms
+// number of rooms the generator will create (includes special rooms)
 export const rooms = 22;
 
 Utils.createWorld(rooms);
